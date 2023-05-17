@@ -1,12 +1,14 @@
 # core deps
+protobuf==4.23.1
 numpy==1.21.6;python_version<"3.10"
 numpy;python_version=="3.10"
 cython==0.29.28
 scipy>=1.4.0
 torch>=1.7
 torchaudio
+# tensorflow
 soundfile
-librosa==0.10.0.*
+librosa==0.9.1
 numba==0.55.1;python_version<"3.9"
 numba==0.56.4;python_version>="3.9"
 inflect==5.6.0
@@ -26,7 +28,7 @@ pandas
 # deps for training
 matplotlib
 # coqui stack
-trainer==0.0.20
+# trainer==0.0.20
 # config management
 coqpit>=0.0.16
 # chinese g2p deps

@@ -2,7 +2,7 @@ import re
 
 from anyascii import anyascii
 
-from TTS.tts.utils.text.chinese_mandarin.numbers import replace_numbers_to_characters_in_text
+# from TTS.tts.utils.text.chinese_mandarin.numbers import replace_numbers_to_characters_in_text
 
 from .abbreviations import abbreviations_en, abbreviations_fr
 from .number_norm import normalize_numbers
@@ -120,10 +120,10 @@ def portuguese_cleaners(text):
     return text
 
 
-def chinese_mandarin_cleaners(text: str) -> str:
-    """Basic pipeline for chinese"""
-    text = replace_numbers_to_characters_in_text(text)
-    return text
+# def chinese_mandarin_cleaners(text: str) -> str:
+#     """Basic pipeline for chinese"""
+#     text = replace_numbers_to_characters_in_text(text)
+#     return text
 
 
 def phoneme_cleaners(text):
