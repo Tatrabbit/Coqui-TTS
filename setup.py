@@ -1,9 +1,29 @@
 #!/usr/bin/env python
+#                   ,*++++++*,                ,*++++++*,
+#                *++.        .+++          *++.        .++*
+#              *+*     ,++++*   *+*      *+*   ,++++,     *+*
+#             ,+,   .++++++++++* ,++,,,,*+, ,++++++++++.   *+,
+#             *+.  .++++++++++++..++    *+.,++++++++++++.  .+*
+#             .+*   ++++++++++++.*+,    .+*.++++++++++++   *+,
+#              .++   *++++++++* ++,      .++.*++++++++*   ++,
+#               ,+++*.    . .*++,          ,++*.      .*+++*
+#              *+,   .,*++**.                  .**++**.   ,+*
+#             .+*                                          *+,
+#             *+.                   Coqui                  .+*
+#             *+*              +++   TTS  +++              *+*
+#             .+++*.            .          .             *+++.
+#              ,+* *+++*...                       ...*+++* *+,
+#               .++.    .""""+++++++****+++++++"""".     ++.
+#                 ,++.                                .++,
+#                   .++*                            *++.
+#                       *+++,                  ,+++*
+#                           .,*++++::::::++++*,.
+#                                  ``````
 
 import os
 import subprocess
 import sys
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 import numpy
 import setuptools.command.build_py
@@ -11,11 +31,10 @@ import setuptools.command.develop
 from Cython.Build import cythonize
 from setuptools import Extension, find_packages, setup
 
-if LooseVersion(sys.version) < LooseVersion("3.6") or LooseVersion(sys.version) > LooseVersion("3.10"):
-    raise RuntimeError("TTS requires python >= 3.6 and <=3.10 " "but your Python version is {}".format(sys.version))
+python_version = sys.version.split()[0]
+if Version(python_version) < Version("3.7") or Version(python_version) >= Version("3.11"):
+    raise RuntimeError("TTS requires python >= 3.7 and < 3.11 " "but your Python version is {}".format(sys.version))
 
-
-cwd = os.path.dirname(os.path.abspath(__file__))
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(cwd, "TTS", "VERSION")) as fin:
@@ -45,17 +64,15 @@ with open(os.path.join(cwd, "requirements.notebooks.txt"), "r") as f:
     requirements_notebooks = f.readlines()
 with open(os.path.join(cwd, "requirements.dev.txt"), "r") as f:
     requirements_dev = f.readlines()
-with open(os.path.join(cwd, "requirements.tf.txt"), "r") as f:
-    requirements_tf = f.readlines()
-requirements_all = requirements_dev + requirements_notebooks + requirements_tf
+requirements_all = requirements_dev + requirements_notebooks
 
 with open("README.md", "r", encoding="utf-8") as readme_file:
     README = readme_file.read()
 
 exts = [
     Extension(
-        name="TTS.tts.layers.glow_tts.monotonic_align.core",
-        sources=["TTS/tts/layers/glow_tts/monotonic_align/core.pyx"],
+        name="TTS.tts.utils.monotonic_align.core",
+        sources=["TTS/tts/utils/monotonic_align/core.pyx"],
     )
 ]
 setup(
@@ -74,7 +91,7 @@ setup(
     # ext_modules=find_cython_extensions(),
     # package
     include_package_data=True,
-    packages=find_packages(include=["TTS*"]),
+    packages=find_packages(include=["TTS"], exclude=["*.tests", "*tests.*", "tests.*", "*tests", "tests"]),
     package_data={
         "TTS": [
             "VERSION",
@@ -96,17 +113,16 @@ setup(
         "all": requirements_all,
         "dev": requirements_dev,
         "notebooks": requirements_notebooks,
-        "tf": requirements_tf,
     },
-    python_requires=">=3.6.0, <3.10",
+    python_requires=">=3.7.0, <3.11",
     entry_points={"console_scripts": ["tts=TTS.bin.synthesize:main", "tts-server = TTS.server.server:main"]},
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
