@@ -309,7 +309,11 @@ class AudioProcessor(object):
         if self.mel_fmax is not None:
             assert self.mel_fmax <= self.sample_rate // 2
         return librosa.filters.mel(
-            self.sample_rate, self.fft_size, n_mels=self.num_mels, fmin=self.mel_fmin, fmax=self.mel_fmax
+            sr=self.sample_rate,
+            n_fft=self.fft_size,
+            n_mels=self.num_mels,
+            fmin=self.mel_fmin,
+            fmax=self.mel_fmax
         )
 
     def _stft_parameters(
@@ -701,7 +705,7 @@ class AudioProcessor(object):
             x = self.sound_norm(x)
         return x
 
-    def save_wav(self, wav: np.ndarray, path: str, sr: int = None) -> None:
+    def save_wav(self, wav: np.ndarray, path, sr: int = None) -> None:
         """Save a waveform to a file using Scipy.
 
         Args:
