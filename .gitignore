@@ -10,6 +10,7 @@ __pycache__/
 
 # C extensions
 *.so
+TTS/tts/utils/monotonic_align/*.c
 
 # Distribution / packaging
 .Python
